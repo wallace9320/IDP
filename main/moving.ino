@@ -1,3 +1,14 @@
+void lowerSpeed() {
+  ml->setSpeed(slowBlock);
+  mr->setSpeed(slowBlock);
+}
+
+void normalSpeed() {
+  ml->setSpeed(normalSpeed);
+  mr->setSpeed(normalSpeed);
+}
+
+
 // first move forward x m, turn right
 void initial() {
   //hard code going forward
@@ -5,15 +16,14 @@ void initial() {
 
 // if right is white turn right, if left is white turn left
 void followLine() {
-  if ()
+  if (leftLine == WHITE && rightLine == BLACK) mr->setSpeed(innerTurnSpeed);
+  else if (leftLine == BLACK && rightLine == WHITE) ml->setSpeed(innerTurnSpeed);
+  else normalSpeed();
 }
 
-// if IR sensor 
+// if IR sensor detect enter tunnel
 void tunnelDriving() {
-
-}
-
-void lowerSpeed() {
-  ml->setSpeed(50);
-  mr->setSpeed(50);
+  if (leftUS < tunnelLeftClearance + 0.5) mr->setSpeed(innerTurnSpeed);
+  else if (leftUS > tunnelLeftClearance - 0.5) ml->setSpeed(innerTurnSpeed);
+  else normalSpeed();
 }
