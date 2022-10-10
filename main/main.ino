@@ -35,7 +35,7 @@ Adafruit_DCMotor* mr = AFMS.getMotor(2);
 
 void setup() {
   // set the normal motor speed
-  AFMS.begin()
+  AFMS.begin();
   normalSpeed();
   frontUS.begin();
   leftUS.begin();
