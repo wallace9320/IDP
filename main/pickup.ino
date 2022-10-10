@@ -6,7 +6,7 @@ void stop() {
 
 // Set the two booleans
 void pickupSetup() {
-  pickup = true;
+  holding = true;
   magnet = (hallValue > hallThreshold); // Find better ways to increase reliability, e.g. read 5 values then take average
 }
 
