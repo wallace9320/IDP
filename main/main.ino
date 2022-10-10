@@ -1,13 +1,17 @@
-#include "constant.h"
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
+#define BLACK 1
+#define WHITE 0
+const int normalSpeed = 200
+const int blockDistance = 5
+bool start = true
+
+
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor* ml = AFMS.getMotor(1);
 Adafruit_DCMotor* mr = AFMS.getMotor(2);
-const int normalSpeed = 200
-const int blockDistance = 5
 
 void setup() {
   // set the normal motor speed
@@ -18,6 +22,8 @@ void setup() {
 
 void loop() {
   // if start is true run starting sequence else run main
+  if (start) initial();
+  else {
     //if within 5 cm of block lower speed of motor
 
     //if within 1 cm of block stop
@@ -40,6 +46,8 @@ void loop() {
     // DO IT LATER
     //if receive command from user
       //begin parking sequence
+
+  }
 
 }
 
