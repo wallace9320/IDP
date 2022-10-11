@@ -2,8 +2,6 @@
 // TODO - 1. read line sensor
 //      - 2. set motors based on line sensor readings
 
-setMotors robot; // created class
-
 // LS pins (analog input)
 const int leftLSPin = A0;
 const int rightLSPin = A1;
