@@ -1,4 +1,5 @@
 #include <movingAvg.h>
+#include <SharpIR.h>
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
@@ -15,33 +16,70 @@ const int tunnelLeftClearance = 5;
 const int hallThreshold;
 const int encoderThreshold;
 
-// moving averages
-movingAvg frontUS(3);
-movingAvg leftUS(3);
-movingAvg topIR(3);
-movingAvg rightMostLine(3);
-
-// int sensorMovingAvg = mySensor.reading(analogRead(SENSOR_PIN));
+// pins
+const int leftLSPin = 0;
+const int rightLSPin = 1;
+const int farRightLSPin = 2;
+const int frontUSechoPin = 3;
+const int frontUStrigPin = 4;
+const int leftUSechoPin = 5;
+const int leftUStrigPin = 6;
+const int IRPin = A2;
 
 // booleans for logic
 bool start = true;
 bool holding = false;
 bool drop = false;
 
-// motor set up
+// time
+unsigned long timeStart;
+
+// moving averages
+movingAvg frontUS(3);
+movingAvg leftUS(3);
+movingAvg topIR(3);
+movingAvg rightMostLine(3);
+
+// sensors
+SharpIR topIRSensor = SharpIR(IRPin, 1080);
+
+// motors
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *ml = AFMS.getMotor(1);
 Adafruit_DCMotor *mr = AFMS.getMotor(2);
+
+// process value from US sensor
+int readUSSensor(front=true) {
+  int trigPin = front ? frontUStrigPin : leftUStrigPin;
+  int echoPin = front ? frontUSechoPin : leftUSechoPin;
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  return pulseIn(echoPin, HIGH) * 0.034 / 2;
+}
 
 void setup()
 {
   // set the normal motor speed
   AFMS.begin();
   normalSpeed();
+
+  // moving avgs
   frontUS.begin();
   leftUS.begin();
   topIR.begin();
   rightMostLine.begin();
+
+  // pin initialization
+  pinMode(leftLSPin, INPUT); 
+  pinMode(rightLSPin, INPUT);
+  pinMode(farRightLSPin, INPUT);
+  pinMode(frontUStrigPin, OUTPUT);
+  pinMode(frontUSechoPin, INPUT);
+  pinMode(leftUStrigPin, OUTPUT);
+  pinMode(leftUSechoPin, INPUT);
 }
 
 void loop()
@@ -55,7 +93,7 @@ void loop()
   else
   {
     // if within 5 cm of block lower speed of motor
-    if (frontUS.reading(analogRead(FRONT_PIN)) < 5)
+    if (frontUS.reading(readUSSensor(front=true)) < 5)
       lowerSpeed();
     else
       normalSpeed();
@@ -64,11 +102,11 @@ void loop()
     // initialize pick up sequence
     // set encoder reference point
     // arrest others; run all in one go
-    if (frontUS.reading(analogRead(FRONT_PIN)) < 1 && !pickup)
+    if (frontUS.reading(readUSSensor(front=true)) < 1 && !pickup)
       pickupAll();
 
     // if in tunnel drive in tunnel else follow line
-    if (topIR.reading(analogRead(TOP_PIN)) < ceilingThreshold)
+    if (topIR.reading(topIRSensor.distance()) < ceilingThreshold)
       tunnelDriving();
     else
       followLine();

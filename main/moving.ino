@@ -2,39 +2,45 @@
 // TODO - 1. read line sensor
 //      - 2. set motors based on line sensor readings
 
-// LS pins (analog input)
-const int leftLSPin = A0;
-const int rightLSPin = A1;
-
 // timing LS - better way than using delay function
 unsigned long lineSensorCm; // line sensor current millis
 unsigned long lineSensorPm; // line sensor previous millis
 const int LS_PERIOD = 50;   // checking line sensor value in every 50 ms
 
-// timing Motor
-unsigned long motorCm;
-unsigned long motorPm;
-const int MOTOR_PERIOD = 50; // updating motor speeds in every 50ms
+// // timing Motor
+// unsigned long motorCm;
+// unsigned long motorPm;
+// const int MOTOR_PERIOD = 50; // updating motor speeds in every 50ms
 
 // debug purpose, when we change to true, it will print out values that sensor reads on serial monitor
 bool LSDebug = false;
-bool MotorDebug = false;
 
 // initialise the line sensor values
 int leftLSReading = 0;
 int rightLSReading = 0;
-const int LS_THRESHOLD = 500; // distinguish black and white colour
 
 // function for reading line sensor values and moving the robot
-void readLSAndMove()
+
+void lowerSpeed() {
+  ml->setSpeed(slowBlock);
+  mr->setSpeed(slowBlock);
+}
+
+void normalSpeed() {
+  ml->setSpeed(normalSpeed);
+  mr->setSpeed(normalSpeed);
+}
+
+void followLine()
 {
   // to avoid using delay() -> reading line sensor values in every LS_PERIOD
   lineSensorCm = millis();
   if (lineSensorCm > lineSensorPm + LS_PERIOD)
   {
     // reading left and right LS
-    leftLSReading = analogRead(leftLSPin);
-    rightLSReading = analogRead(rightLSPin);
+    // Need to change this part
+    leftLSReading = digitalRead(leftLSPin);
+    rightLSReading = digitalRead(rightLSPin);
 
     // only print out the values when we need to debug (to make serial monitor clean)
     if (LSDebug)
@@ -45,6 +51,9 @@ void readLSAndMove()
       Serial.println(rightLSReading);
     }
 
+    if (leftLSReading == WHITE && rightLSReading == BLACK) mr->setSpeed(innerTurnSpeed);
+    else if (leftLSReading == BLACK && rightLSReading == WHITE) ml->setSpeed(innerTurnSpeed);
+    else normalSpeed();
     // reset previous millis
     lineSensorPm = lineSensorCm;
   }
@@ -53,16 +62,15 @@ void readLSAndMove()
   // YOU CAN WRITE YOUR CODE + USING EXISTING LIBRARY
 }
 
-/*
-void lowerSpeed() {
-  ml->setSpeed(slowBlock);
-  mr->setSpeed(slowBlock);
+// if IR sensor detect enter tunnel
+void tunnelDriving() {
+  int leftUSreading = leftUS.reading(readUSSensor(front=false));
+  if (leftUSreading < tunnelLeftClearance + 0.5) mr->setSpeed(innerTurnSpeed);
+  else if (leftUSreading) > tunnelLeftClearance - 0.5) ml->setSpeed(innerTurnSpeed);
+  else normalSpeed();
 }
 
-void normalSpeed() {
-  ml->setSpeed(normalSpeed);
-  mr->setSpeed(normalSpeed);
-}
+/*
 
 // first move forward x m, turn right
 void initial() {
