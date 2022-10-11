@@ -52,84 +52,7 @@ void readLSAndMove()
   }
   // moving robot after reading line sensor values
   // adjusting motor speed when the robot moves over the white line
-  // white: 0
-  // black: 1
-  // right = black and left = black
-  if (leftLSReading == 1 && rightLSReading == 1)
-  {
-    // move forwards
-    robot.moveForward();
-  }
-  // right = black and left = white
-  else if (leftLSReading == 1 && rightLSReading == 0)
-  {
-    // turn left
-    robot.turnLeft();
-  }
-  // right = white and left = black
-  else if (leftLSReading == 0 && rightLSReading == 1)
-  {
-    // turn right
-    robot.turnRight();
-  }
-  else
-  {
-    // stop
-    robot.stop();
-  }
-}
-
-// setting motor speeds and direction
-// all the possible movement functions will place here
-class setMotors
-{
-
-private: // can only change this value inside this class, cannot be modified outside
-  float MOTOR_BASE_SPEED = 300.0;
-  float MOTOR_MIN_SPEED = 20.0; // when we move over the ramp, it needs to be greater than min speed
-                                // otherwise it will move backwards
-public:
-  float motorLeftSpeed;
-  float motorRightSpeed;
-
-  void moveForward()
-  { // update motor speed in every MOTOR_PERIOD
-    motorCm = millis();
-    if (motorCm > motorPm + MOTOR_PERIOD)
-    {
-      // will create motorLeft and motorRight object
-      motorLeft.setSpeed(MOTOR_BASE_SPEED);
-      motorRight.setSpeed(MOTOR_BASE_SPEED);
-
-      // debug
-      printSpeed();
-
-      // reset motor previous millis
-      motorPm = motorCm;
-    };
-  }
-  // will code later but similar to moveForward function above.
-  void turnRight(){
-      // check motor speed and wheels' movement and set appropriate speed values to turn robot in desired angle
-  };
-  void turnLeft();
-  void moveBackward();
-  void stop()
-  {
-    motorLeft.setSpeed(0);
-    motorRight.setSpeed(0);
-  }
-  // only print out left and right speed when MotorDebug = true.
-  void printSpeed()
-  {
-    if (MotorDebug)
-    {
-      Serial.print("Left speed: ");
-      Serial.print(motorLeftSpeed);
-      Serial.print(", Right speed: ");
-      Serial.println(motorRightSpeed);
-    }
-  }
+  // YOU CAN WRITE YOUR CODE + USING EXISTING LIBRARY
 }
 
 /*
@@ -142,7 +65,6 @@ void normalSpeed() {
   ml->setSpeed(normalSpeed);
   mr->setSpeed(normalSpeed);
 }
-
 
 // first move forward x m, turn right
 void initial() {
