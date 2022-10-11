@@ -52,20 +52,22 @@ void readLSAndMove()
   }
   // moving robot after reading line sensor values
   // adjusting motor speed when the robot moves over the white line
-  // white: < threshold
-  // black: > threshold  * should as elec team about what values black and white colour get
+  // white: 0
+  // black: 1
   // right = black and left = black
-  if (leftLSReading > LS_THRESHOLD && rightLSReading > LS_THRESHOLD)
+  if (leftLSReading == 1 && rightLSReading == 1)
   {
     // move forwards
     robot.moveForward();
-  } // right = black and left = white
-  elif (leftLSReading > LS_THRESHOLD && rightLSReading < LS_THRESHOLD)
+  }
+  // right = black and left = white
+  else if (leftLSReading == 1 && rightLSReading == 0)
   {
     // turn left
     robot.turnLeft();
-  } // right = white and left = black
-  elif (leftLSReading < LS_THRESHOLD && rightLSReading > LS_THRESHOLD)
+  }
+  // right = white and left = black
+  else if (leftLSReading == 0 && rightLSReading == 1)
   {
     // turn right
     robot.turnRight();
