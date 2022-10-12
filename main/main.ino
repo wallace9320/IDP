@@ -24,15 +24,18 @@ const int frontUSechoPin = 3;
 const int frontUStrigPin = 4;
 const int leftUSechoPin = 5;
 const int leftUStrigPin = 6;
+const int buttonPin = 7;
 const int IRPin = A2;
 
 // booleans for logic
 bool start = true;
 bool holding = false;
 bool drop = false;
+bool button = false;
 
 // time
 unsigned long timeStart;
+unsigned long timeButton;
 
 // moving averages
 movingAvg frontUS(3);
@@ -81,10 +84,18 @@ void setup()
   pinMode(frontUSechoPin, INPUT);
   pinMode(leftUStrigPin, OUTPUT);
   pinMode(leftUSechoPin, INPUT);
+  pinMode(buttonPin, INPUT);
+
+  timeButton = millis();
 }
 
 void loop()
 {
+  if (digitalRead(buttonPin) == HIGH && millis() - timeButton > 1000)
+  {
+    button = !button;
+    timeButton = millis();
+  }
   if (button)
   {
     // if start is true run starting sequence else run main
