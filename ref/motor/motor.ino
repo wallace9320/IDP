@@ -15,12 +15,12 @@ void setup() {
   timeStart = millis();
   Serial.begin(9600);
   AFMS.begin();
-  m1->setSpeed(255);
-  m2->setSpeed(255);
+  m1->setSpeed(100);
+  m2->setSpeed(200);
 }
 
 void loop() {
-  m1->run(FORWARD);
+  m1->run(BACKWARD);
   m2->run(FORWARD);
   // put your main code here, to run repeatedly:
   // if (millis() - timeStart > 1000) {
