@@ -21,12 +21,14 @@ int rightLSReading = 0;
 
 // function for reading line sensor values and moving the robot
 
-void lowerSpeed() {
+void lowerSpeed()
+{
   ml->setSpeed(slowBlock);
   mr->setSpeed(slowBlock);
 }
 
-void normalSpeed() {
+void normalSpeed()
+{
   ml->setSpeed(normalSpeed);
   mr->setSpeed(normalSpeed);
 }
@@ -51,9 +53,12 @@ void followLine()
       Serial.println(rightLSReading);
     }
 
-    if (leftLSReading == WHITE && rightLSReading == BLACK) mr->setSpeed(innerTurnSpeed);
-    else if (leftLSReading == BLACK && rightLSReading == WHITE) ml->setSpeed(innerTurnSpeed);
-    else normalSpeed();
+    if (leftLSReading == WHITE && rightLSReading == BLACK)
+      mr->setSpeed(innerTurnSpeed);
+    else if (leftLSReading == BLACK && rightLSReading == WHITE)
+      ml->setSpeed(innerTurnSpeed);
+    else
+      normalSpeed();
     // reset previous millis
     lineSensorPm = lineSensorCm;
   }
@@ -63,11 +68,14 @@ void followLine()
 }
 
 // if IR sensor detect enter tunnel
-void tunnelDriving() {
-  int leftUSreading = leftUS.reading(readUSSensor(front=false));
-  if (leftUSreading < tunnelLeftClearance + 0.5) mr->setSpeed(innerTurnSpeed);
+void tunnelDriving()
+{
+  int leftUSreading = leftUS.reading(readUSSensor(front = false));
+  if (leftUSreading < tunnelLeftClearance + 0.5)
+    mr->setSpeed(innerTurnSpeed);
   else if (leftUSreading) > tunnelLeftClearance - 0.5) ml->setSpeed(innerTurnSpeed);
-  else normalSpeed();
+  else
+    normalSpeed();
 }
 
 /*

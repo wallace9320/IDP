@@ -90,7 +90,7 @@ void loop()
     // if start is true run starting sequence else run main
     // frontUSQueue.push(frontUS)
     if (start)
-      initial(); // in initial, everything is hard coded until enter white line loop
+      initialMovement(); // in initial, everything is hard coded until enter white line loop
     else if (drop)
       drop(); // in drop, will do turning, dropping, backing, and change holding bool to false
     else
