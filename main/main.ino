@@ -119,7 +119,6 @@ void loop()
 
       // if within 1 cm of block stop
       // initialize pick up sequence
-      // set encoder reference point
       // arrest others; run all in one go
       if (frontUS.reading(readUSSensor(true)) < 1 && !holding)
         pickupAll();
