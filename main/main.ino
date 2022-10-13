@@ -114,7 +114,6 @@ void loop()
 
       // if within 1 cm of block stop
       // initialize pick up sequence
-      // set encoder reference point
       // arrest others; run all in one go
       if (frontUS.reading(readUSSensor(front = true)) < 1 && !pickup)
         pickupAll();
@@ -128,7 +127,7 @@ void loop()
       // The first condition is only trigger if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
       // The second conditionis if is to make sure it has traveled a certain distance, ie must be somewhere far away,
       // so crossing that white cross won't trigger this
-      if (millis() - timeStart > 3000 && encoderReading > encoderThreshold && rightMostLine.reading(analogRead(RIGHT_MOST_LINE_PIN)) == WHITE)
+      if (millis() - timeStart > 3000 && rightMostLine.reading(analogRead(RIGHT_MOST_LINE_PIN)) == WHITE)
       {
         noOfWhiteLines++;
         // we can add an LED to signal this happened
