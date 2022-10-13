@@ -9,6 +9,8 @@
 #define WHITE 0
 const int normalSpeed = 200;
 const int innerTurnSpeed = 100; // Speed of inner wheel when turning
+const int turnTime = 1000;
+const int straightTime = 2000;
 const int slowSpeed = 50;       // Speed when very close to block
 const int blockDistance = 5;
 const int ceilingThreshold = 10;

@@ -2,10 +2,16 @@
 // time estimated for now, need to test and put the right time values
 void initialMovement()
 {
-    if (millis() - buttonTime < 3000)
-    {
-        normalSpeed();
-    }
-    delay(1000);
-    // and then turn right
+  ml->run(FORWARD);
+  mr->run(FORWARD);
+  delay(straightTime);
+
+  mr->setSpeed(innerTurnSpeed);
+  mr->run(BACKWARD);
+  delay(turnTime);
+
+  mr->setSpeed(normalSpeed);
+  mr->run(FORWARD);
+
+  start = false;
 }

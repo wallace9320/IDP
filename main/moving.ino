@@ -20,11 +20,6 @@ int leftLSReading = 0;
 int rightLSReading = 0;
 
 // function for reading line sensor values and moving the robot
-void setForward() {
-  m1->run(FORWARD);
-  m2->run(FORWARD);
-}
-
 void setLowerSpeed() {
   ml->setSpeed(slowSpeed);
   mr->setSpeed(slowSpeed);
