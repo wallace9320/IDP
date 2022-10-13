@@ -5,6 +5,7 @@ void initialMovement()
     if (millis() - buttonTime < 3000)
     {
         normalSpeed();
+        delay(1000);
     }
     if (millis() - buttonTime < 5000)
     {
