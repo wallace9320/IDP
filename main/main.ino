@@ -53,8 +53,8 @@ SharpIR topIRSensor = SharpIR(IRPin, 1080);
 
 // motors
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
-Adafruit_DCMotor *ml = AFMS.getMotor(1);
-Adafruit_DCMotor *mr = AFMS.getMotor(2);
+Adafruit_DCMotor *ml = AFMS.getMotor(2);
+Adafruit_DCMotor *mr = AFMS.getMotor(1);
 
 // process value from US sensor
 int readUSSensor(bool front = true)
@@ -74,6 +74,8 @@ void setup()
   // set the normal motor speed
   AFMS.begin();
   setNormalSpeed();
+  ml->run(FORWARD);
+  mr->run(FORWARD);
 
   // moving avgs
   frontUS.begin();
