@@ -1,17 +1,20 @@
+void actualDropping() {
+  //dropping sequence
+
+}
+
 void droppingMovement() {
   mr->setSpeed(innerTurnSpeed);
   mr->run(BACKWARD);
   delay(turnTime);
-  
+
   mr->setSpeed(normalSpeed);
   mr->run(FORWARD);
-  delay(striaghtTime);
-
-  //dropping sequence
+  delay(straightTime);
 
   ml->run(BACKWARD);
   mr->run(BACKWARD);
-  delay(striaghtTime);
+  delay(straightTime);
 
   mr->setSpeed(innerTurnSpeed);
   mr->run(FORWARD);

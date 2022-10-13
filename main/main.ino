@@ -15,7 +15,6 @@ const int slowSpeed = 50;       // Speed when very close to block
 const int blockDistance = 5;
 const int ceilingThreshold = 10;
 const int tunnelLeftClearance = 5;
-const int hallThreshold;
 const int encoderThreshold;
 
 // pins
@@ -29,6 +28,7 @@ const int leftUStrigPin = 6;
 const int buttonPin = 7;
 const int redLED = 8;
 const int greenLED = 9;
+const int hallEffectPin = 12;
 const int IRPin = A2;
 
 // booleans for logic
@@ -94,6 +94,9 @@ void setup()
   pinMode(leftUStrigPin, OUTPUT);
   pinMode(leftUSechoPin, INPUT);
   pinMode(buttonPin, INPUT);
+  pinMode(redLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
+  pinMode(hallEffectPin, OUTPUT);
 
   timeButton = millis();
 }
