@@ -1,5 +1,3 @@
-void drop()
-{
-  // entire sequence of turning right, dropping, and reverse
+void droppingMovement() {
   holding = false;
 }

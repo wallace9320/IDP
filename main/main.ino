@@ -25,17 +25,22 @@ const int frontUStrigPin = 4;
 const int leftUSechoPin = 5;
 const int leftUStrigPin = 6;
 const int buttonPin = 7;
+const int redLED = 8;
+const int greenLED = 9;
 const int IRPin = A2;
 
 // booleans for logic
 bool start = true;
 bool holding = false;
+bool magnet = false;
 bool drop = false;
 bool button = false;
 
 // time
 unsigned long timeStart;
 unsigned long timeButton;
+
+int noOfWhiteLines = 0;
 
 // moving averages
 movingAvg frontUS(3);
@@ -52,7 +57,7 @@ Adafruit_DCMotor *ml = AFMS.getMotor(1);
 Adafruit_DCMotor *mr = AFMS.getMotor(2);
 
 // process value from US sensor
-int readUSSensor(front = true)
+int readUSSensor(bool front = true)
 {
   int trigPin = front ? frontUStrigPin : leftUStrigPin;
   int echoPin = front ? frontUSechoPin : leftUSechoPin;
@@ -68,7 +73,7 @@ void setup()
 {
   // set the normal motor speed
   AFMS.begin();
-  normalSpeed();
+  setNormalSpeed();
 
   // moving avgs
   frontUS.begin();
@@ -103,19 +108,19 @@ void loop()
     if (start)
       initialMovement(); // in initial, everything is hard coded until enter white line loop
     else if (drop)
-      drop(); // in drop, will do turning, dropping, backing, and change holding bool to false
+      droppingMovement(); // in drop, will do turning, dropping, backing, and change holding bool to false
     else
     {
       // if within 5 cm of block lower speed of motor
-      if (frontUS.reading(readUSSensor(front = true)) < 5)
-        lowerSpeed();
+      if (frontUS.reading(readUSSensor(true)) < 5)
+        setLowerSpeed();
       else
-        normalSpeed();
+        setNormalSpeed();
 
       // if within 1 cm of block stop
       // initialize pick up sequence
       // arrest others; run all in one go
-      if (frontUS.reading(readUSSensor(front = true)) < 1 && !pickup)
+      if (frontUS.reading(readUSSensor(true)) < 1 && !holding)
         pickupAll();
 
       // if in tunnel drive in tunnel else follow line
@@ -127,7 +132,7 @@ void loop()
       // The first condition is only trigger if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
       // The second conditionis if is to make sure it has traveled a certain distance, ie must be somewhere far away,
       // so crossing that white cross won't trigger this
-      if (millis() - timeStart > 3000 && rightMostLine.reading(analogRead(RIGHT_MOST_LINE_PIN)) == WHITE)
+      if (millis() - timeStart > 3000 && rightMostLine.reading(analogRead(farRightLSPin)) == WHITE)
       {
         noOfWhiteLines++;
         // we can add an LED to signal this happened
