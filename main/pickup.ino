@@ -18,10 +18,10 @@ void pickupAll() {
   stop();
   //set encoder reference point
   pickupSetup();
-  if (magnet) digitalWrite(RedLED, HIGH);
-  else digitalWrite(GreenLED, HIGH);
+  if (magnet) digitalWrite(redLED, HIGH);
+  else digitalWrite(greenLED, HIGH);
   delay(5000);
-  if (magnet) digitalWrite(RedLED, LOW);
-  else digitalWrite(GreenLED, LOW);
+  if (magnet) digitalWrite(redLED, LOW);
+  else digitalWrite(greenLED, LOW);
   actualPickup();
 }
