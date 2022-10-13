@@ -6,8 +6,6 @@ void initialMovement()
     {
         normalSpeed();
     }
-    if (millis() - buttonTime < 5000)
-    {
-        // turn right
-    }
+    delay(1000);
+    // and then turn right
 }
