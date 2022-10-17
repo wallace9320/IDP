@@ -5,8 +5,8 @@
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
 // Constants
-#define BLACK 1
-#define WHITE 0
+#define BLACK 0
+#define WHITE 1
 const int normalSpeed = 200;
 const int innerTurnSpeed = 100; // Speed of inner wheel when turning
 const int turnTime = 1000;
@@ -29,6 +29,7 @@ const int buttonPin = 7;
 const int redLED = 8;
 const int greenLED = 9;
 const int hallEffectPin = 12;
+const int runningLED = 13;
 const int IRPin = A2;
 
 // booleans for logic
@@ -97,6 +98,7 @@ void setup()
   pinMode(redLED, OUTPUT);
   pinMode(greenLED, OUTPUT);
   pinMode(hallEffectPin, OUTPUT);
+  pinMode(runningLED, OUTPUT);  
 
   timeButton = millis();
 }
@@ -110,6 +112,7 @@ void loop()
   }
   if (button)
   {
+    digitalWrite(runningLED, HIGH);
     // if start is true run starting sequence else run main
     // frontUSQueue.push(frontUS)
     if (start)
@@ -154,4 +157,6 @@ void loop()
       // begin parking sequence
     }
   }
+  else
+    digitalWrite(runningLED, HIGH);
 }
