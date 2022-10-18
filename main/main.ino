@@ -134,7 +134,7 @@ void loop()
         pickupAll();
 
       // if in tunnel drive in tunnel else follow line
-      if (topIR.reading(topIRSensor.distance()) < ceilingThreshold)
+      if (topIR.reading(topIRSensor.getDistance()) < ceilingThreshold)
         tunnelDriving();
       else
         followLine();
