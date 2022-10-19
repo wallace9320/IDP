@@ -24,4 +24,5 @@ void pickupAll() {
   if (magnet) digitalWrite(redLED, LOW);
   else digitalWrite(greenLED, LOW);
   actualPickup();
+  pickupTime = millis();
 }

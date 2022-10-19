@@ -42,6 +42,7 @@ bool button = false;
 // time
 unsigned long timeStart;
 unsigned long timeButton;
+unsigned long pickupTime;
 
 int noOfWhiteLines = 0;
 
@@ -122,7 +123,7 @@ void loop()
     else
     {
       // if within 5 cm of block lower speed of motor
-      if (frontUS.reading(readUSSensor(true)) < 5)
+      if (frontUS.reading(readUSSensor(true)) < 10)
         setLowerSpeed();
       else
         setNormalSpeed();
@@ -130,7 +131,7 @@ void loop()
       // if within 1 cm of block stop
       // initialize pick up sequence
       // arrest others; run all in one go
-      if (frontUS.reading(readUSSensor(true)) < 1 && !holding)
+      if ((frontUS.reading(readUSSensor(true)) < 4 || frontUS.reading(readUSSensor(true)) > 980) && !holding)
         pickupAll();
 
       // if in tunnel drive in tunnel else follow line
@@ -142,7 +143,7 @@ void loop()
       // The first condition is only trigger if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
       // The second conditionis if is to make sure it has traveled a certain distance, ie must be somewhere far away,
       // so crossing that white cross won't trigger this
-      if (millis() - timeStart > 3000 && rightMostLine.reading(analogRead(farRightLSPin)) == WHITE)
+      if (millis() - pickupTime > 20000 && millis() - timeStart > 3000 && rightMostLine.reading(analogRead(farRightLSPin)) == WHITE)
       {
         noOfWhiteLines++;
         // we can add an LED to signal this happened
