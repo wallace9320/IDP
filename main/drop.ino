@@ -1,7 +1,6 @@
 void actualDropping() {
   lservo.write(135.0/270*180);
   rservo.write(15.0/270*180);
-  delay(300);
 }
 
 void droppingMovement() {

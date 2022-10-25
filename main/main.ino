@@ -10,7 +10,6 @@ Servo rservo;
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *ml = AFMS.getMotor(1);
 Adafruit_DCMotor *mr = AFMS.getMotor(2);
-int i = 0;
 
 // process value from US sensor
 int readUSSensor(bool front = true)
@@ -74,8 +73,7 @@ void loop()
     else
     { 
       frontUS = readUSSensor(true);
-      Serial.print(i);
-      Serial.print("  Hall effect  ");
+      Serial.print("Hall effect  ");
       Serial.print(analogRead(hallEffectPin));
       Serial.print("  US  ");
       Serial.print(frontUS);
