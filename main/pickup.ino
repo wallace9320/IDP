@@ -9,12 +9,12 @@ void stop() {
 // Set the two booleans
 void pickupSetup() {
   holding = true;
-  magnet = (digitalRead(hallEffectPin) == LOW); // Find better ways to increase reliability, e.g. read 5 values then take average
+  magnet = (analogRead(hallEffectPin) > 200); // Find better ways to increase reliability, e.g. read 5 values then take average
 }
 
 void actualPickup() {
-  lservo.write(135.0/270*180);
-  rservo.write(15.0/270*180);
+  lservo.write(15.0/270*180);
+  rservo.write(135.0/270*180);
   delay(300);
 }
 

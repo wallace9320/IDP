@@ -1,9 +1,3 @@
-// initialise the line sensor values
-int leftLSReading = 0;
-int rightLSReading = 0;
-int farRightLSReading = 0;
-
-// function for reading line sensor values and moving the robot
 void setLowerSpeed() {
   if (mlSpeed != slowSpeed || mrSpeed != slowSpeed) {
     ml->setSpeed(slowSpeed);
@@ -63,6 +57,32 @@ void tunnelDriving() {
   else if (leftUSreading > tunnelLeftClearance - 0.5) turnRight();
   else setNormalSpeed();
 }
+
+void hardLeft() {
+  ml->setSpeed(120);
+  mr->setSpeed(255);
+  ml->run(FORWARD);
+  mr->run(FORWARD);
+  Serial.println("LMFAO");
+  delay(5300);
+  ml->setSpeed(normalSpeed);
+  mr->setSpeed(normalSpeed);
+  mlSpeed = normalSpeed;
+  mrSpeed = normalSpeed;
+  turn = true;
+}
+// void bumpWall() {
+//   ml->run(BACKWARD);
+//   mr->run(BACKWARD);
+//   delay(300);
+//   ml->setSpeed(it);
+//   mr->setSpeed(ot);
+//   mlSpeed = it;
+//   mrSpeed = ot;
+//   ml->run(BACKWARD);
+//   mr->run(FORWARD);
+//   delay(2000);
+// }
 
 /*
 // timing Motor

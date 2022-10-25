@@ -10,6 +10,7 @@ Servo rservo;
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *ml = AFMS.getMotor(1);
 Adafruit_DCMotor *mr = AFMS.getMotor(2);
+int i = 0;
 
 // process value from US sensor
 int readUSSensor(bool front = true)
@@ -17,25 +18,28 @@ int readUSSensor(bool front = true)
   int trigPin = front ? frontUStrigPin : leftUStrigPin;
   int echoPin = front ? frontUSechoPin : leftUSechoPin;
   digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
+  // delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
+  // delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   return pulseIn(echoPin, HIGH) * 0.034 / 2;
 }
 
 void setup()
 {
+  Serial.begin(9600);
   AFMS.begin();
-  setNormalSpeed();
+  ml->setSpeed(0);
+  mr->setSpeed(0);
   ml->run(FORWARD);
   mr->run(FORWARD);
 
   lservo.attach(lservoPin);
   rservo.attach(rservoPin);
-  lservo.write(15.0/270*180);
-  rservo.write(135.0/270*180);
+  lservo.write(135.0/270*180);
+  rservo.write(15.0/270*180);
 
+  pinMode(buttonPin, INPUT_PULLUP);
   pinMode(leftLSPin, INPUT);
   pinMode(rightLSPin, INPUT);
   pinMode(farRightLSPin, INPUT);
@@ -43,22 +47,24 @@ void setup()
   pinMode(frontUSechoPin, INPUT);
   pinMode(leftUStrigPin, OUTPUT);
   pinMode(leftUSechoPin, INPUT);
-  pinMode(buttonPin, INPUT);
   pinMode(redLED, OUTPUT);
   pinMode(greenLED, OUTPUT);
-  pinMode(hallEffectPin, OUTPUT);
+  pinMode(hallEffectPin, INPUT);
   pinMode(runningLED, OUTPUT);  
 
   timeButton = millis();
+
+  delay(1000);
 } 
 
 void loop()
 {
-  if (digitalRead(buttonPin) == HIGH && millis() - timeButton > 1000)
-  {
-    button = !button;
-    timeButton = millis();
-  }
+  
+  // if (digitalRead(buttonPin) == HIGH && millis() - timeButton > 1000)
+  // {
+  //   button = !button;
+  //   timeButton = millis();
+  // }
   if (button)
   {
     digitalWrite(runningLED, HIGH);
@@ -66,38 +72,57 @@ void loop()
     if (start)
       initialMovement(); // in initial, everything is hard coded until enter white line loop
     else
-    {
+    { 
+      frontUS = readUSSensor(true);
+      Serial.print(i);
+      Serial.print("  Hall effect  ");
+      Serial.print(analogRead(hallEffectPin));
+      Serial.print("  US  ");
+      Serial.print(frontUS);
+      Serial.print("  start  ");
+      Serial.print(start);
+      Serial.print("  holding  ");
+      Serial.print(holding);
+      Serial.print("  magnet  ");
+      Serial.print(magnet);
+      Serial.print("  turn  ");
+      Serial.print(turn);
+      Serial.println("  white line  ");
+
+
+      // Serial.println();
       // if within 5 cm of block lower speed of motor
-      if (readUSSensor(true) < 10)
+      if (!turn && frontUS < 30)
+        hardLeft();
+      if (frontUS < 10)
         setLowerSpeed();
       else
         setNormalSpeed();
 
       // if within 1 cm of block stop, initialize pick up sequence; arrest others; run all in one go
-      if ((readUSSensor(true) < 4 || readUSSensor(true) > 980) && !holding)
+      if (frontUS < 4 && !holding)
         pickupAll();
 
-      // if in tunnel drive in tunnel else follow line
-      if (holding && readUSSensor(true) < 10)
-        tunnelDriving();
-      else
-        followLine();
+      // if (holding && readUSSensor(false) < 10)
+      //   tunnelDriving();
+      
+      followLine();
 
       // The first condition is only trigger if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
       // The second conditionis if is to make sure it has traveled a certain distance, ie must be somewhere far away,
       // so crossing that white cross won't trigger this
-      if (millis() - pickupTime > 20000 && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
+      if (holding && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
       {
         noOfWhiteLines++;
         // we can add an LED to signal this happened
         timeStart = millis();
       }
 
-      if (holding && (magnet && noOfWhiteLines >= 3 || !magnet && noOfWhiteLines == 1))
-        droppingMovement(); // hard coded, run all at once
-
+      if (holding && (magnet && noOfWhiteLines >= 4 || !magnet && noOfWhiteLines == 2))
+        droppingMovement();
     }
   }
   else
     digitalWrite(runningLED, LOW);
+
 }

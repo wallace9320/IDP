@@ -82,11 +82,11 @@ void followLine() {
   rightLSReading = digitalRead(rightLSPin);
   rrrReading = digitalRead(rrrPin);
   // usReading = digitalRead(usPin);
-  // Serial.print(leftLSReading);
-  // Serial.print(" <-L  R-> ");
-  // Serial.print(rightLSReading);
-  // Serial.print("       RM-> ");
-  // Serial.println(rrrReading);
+  Serial.print(leftLSReading);
+  Serial.print(" <-L  R-> ");
+  Serial.print(rightLSReading);
+  Serial.print("       RM-> ");
+  Serial.println(rrrReading);
   // if (millis() - timeStart > 500) {
   //   timeStart = millis();
   //   Serial.print(mlSpeed);
@@ -130,8 +130,5 @@ void tunnelDriving() {
 }
 
 void loop() {
-  if (holding && leftUS.reading(readUSSensor(true)) < 10)
-    tunnelDriving();
-  else
-    followLine();
+followLine();
 }
