@@ -1,35 +1,77 @@
-// Line follower
-// TODO - 1. read line sensor
-//      - 2. set motors based on line sensor readings
-
-// timing LS - better way than using delay function
-unsigned long lineSensorCm; // line sensor current millis
-unsigned long lineSensorPm; // line sensor previous millis
-const int LS_PERIOD = 50;   // checking line sensor value in every 50 ms
-
-// // timing Motor
-// unsigned long motorCm;
-// unsigned long motorPm;
-// const int MOTOR_PERIOD = 50; // updating motor speeds in every 50ms
-
-// debug purpose, when we change to true, it will print out values that sensor reads on serial monitor
-bool LSDebug = false;
-
 // initialise the line sensor values
 int leftLSReading = 0;
 int rightLSReading = 0;
+int farRightLSReading = 0;
 
 // function for reading line sensor values and moving the robot
 void setLowerSpeed() {
-  ml->setSpeed(slowSpeed);
-  mr->setSpeed(slowSpeed);
+  if (mlSpeed != slowSpeed || mrSpeed != slowSpeed) {
+    ml->setSpeed(slowSpeed);
+    mr->setSpeed(slowSpeed);
+    ml->run(FORWARD);
+    mr->run(FORWARD);
+    mlSpeed = slowSpeed;
+    mrSpeed = slowSpeed;
+  }
 }
 
 void setNormalSpeed() {
-  ml->setSpeed(normalSpeed);
-  mr->setSpeed(normalSpeed);
+  if (mlSpeed != normalSpeed || mrSpeed != normalSpeed) {
+    ml->setSpeed(normalSpeed);
+    mr->setSpeed(normalSpeed);
+    ml->run(FORWARD);
+    mr->run(FORWARD);
+    mlSpeed = normalSpeed;
+    mrSpeed = normalSpeed;
+  }
 }
 
+void turnRight() {
+  if (mlSpeed != ot || mrSpeed != it) {
+    ml->setSpeed(ot);
+    mr->setSpeed(it);
+    ml->run(FORWARD);
+    mr->run(BACKWARD);
+    mlSpeed = ot;
+    mrSpeed = it;
+  }
+}
+
+void turnLeft() {
+  if (mlSpeed != it || mrSpeed != ot) {
+    ml->setSpeed(it);
+    mr->setSpeed(ot);
+    ml->run(BACKWARD);
+    mr->run(FORWARD);
+    mlSpeed = it;
+    mrSpeed = ot;
+  }
+}
+
+void followLine() {
+  leftLSReading = digitalRead(leftLSPin);
+  rightLSReading = digitalRead(rightLSPin);
+  farRightLSReading = digitalRead(farRightLSPin);
+  if (leftLSReading == WHITE && rightLSReading == BLACK) turnLeft();
+  else if (leftLSReading == BLACK && rightLSReading == WHITE && farRightLSReading == BLACK) turnRight();
+  else setNormalSpeed();
+}
+
+void tunnelDriving() {
+  int leftUSreading = readUSSensor(false);
+  if (leftUSreading < tunnelLeftClearance + 0.5) turnLeft();
+  else if (leftUSreading > tunnelLeftClearance - 0.5) turnRight();
+  else setNormalSpeed();
+}
+
+/*
+// timing Motor
+unsigned long motorCm;
+unsigned long motorPm;
+const int MOTOR_PERIOD = 50; // updating motor speeds in every 50ms
+
+debug purpose, when we change to true, it will print out values that sensor reads on serial monitor
+bool LSDebug = false;
 void followLine()
 {
   // to avoid using delay() -> reading line sensor values in every LS_PERIOD
@@ -60,34 +102,4 @@ void followLine()
   // adjusting motor speed when the robot moves over the white line
   // YOU CAN WRITE YOUR CODE + USING EXISTING LIBRARY
 }
-
-// if IR sensor detect enter tunnel
-void tunnelDriving() {
-  int leftUSreading = leftUS.reading(readUSSensor(false));
-  if (leftUSreading < tunnelLeftClearance + 0.5) mr->setSpeed(innerTurnSpeed);
-  else if (leftUSreading > tunnelLeftClearance - 0.5) ml->setSpeed(innerTurnSpeed);
-  else setNormalSpeed();
-}
-
-/*
-
-// first move forward x m, turn right
-void initial() {
-  //hard code going forward
-}
-
-// if right is white turn right, if left is white turn left
-void followLine() {
-  if (leftLine == WHITE && rightLine == BLACK) mr->setSpeed(innerTurnSpeed);
-  else if (leftLine == BLACK && rightLine == WHITE) ml->setSpeed(innerTurnSpeed);
-  else normalSpeed();
-}
-
-// if IR sensor detect enter tunnel
-void tunnelDriving() {
-  if (leftUS < tunnelLeftClearance + 0.5) mr->setSpeed(innerTurnSpeed);
-  else if (leftUS > tunnelLeftClearance - 0.5) ml->setSpeed(innerTurnSpeed);
-  else normalSpeed();
-}
-
 */

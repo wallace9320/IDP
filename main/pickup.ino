@@ -2,6 +2,8 @@
 void stop() {
   ml->setSpeed(0);
   mr->setSpeed(0);
+  mlSpeed = 0;
+  mrSpeed = 0;
 }
 
 // Set the two booleans
@@ -11,18 +13,22 @@ void pickupSetup() {
 }
 
 void actualPickup() {
-  //pickup mechanism to be decided depending on mechanical team
+  lservo.write(135.0/270*180);
+  rservo.write(15.0/270*180);
+  delay(300);
 }
 
 void pickupAll() {
   stop();
-  //set encoder reference point
-  pickupSetup();
-  if (magnet) digitalWrite(redLED, HIGH);
-  else digitalWrite(greenLED, HIGH);
-  delay(5000);
-  if (magnet) digitalWrite(redLED, LOW);
-  else digitalWrite(greenLED, LOW);
-  actualPickup();
-  pickupTime = millis();
+  delay(200);
+  if (readUSSensor(true) < 4 || readUSSensor(true) > 980) {
+    pickupSetup();
+    if (magnet) digitalWrite(redLED, HIGH);
+    else digitalWrite(greenLED, HIGH);
+    delay(5000);
+    if (magnet) digitalWrite(redLED, LOW);
+    else digitalWrite(greenLED, LOW);
+    actualPickup();
+    pickupTime = millis();
+  }
 }

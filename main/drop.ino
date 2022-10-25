@@ -1,6 +1,7 @@
 void actualDropping() {
-  //dropping sequence
-
+  lservo.write(15.0/270*180);
+  rservo.write(135.0/270*180);
+  delay(300);
 }
 
 void droppingMovement() {
@@ -11,6 +12,8 @@ void droppingMovement() {
   mr->setSpeed(normalSpeed);
   mr->run(FORWARD);
   delay(straightTime);
+
+  actualDropping();
 
   ml->run(BACKWARD);
   mr->run(BACKWARD);

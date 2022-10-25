@@ -11,8 +11,8 @@ Adafruit_DCMotor* mr = AFMS.getMotor(2);
 #define WHITE 1
 unsigned long timeStart;
 const int normalSpeed = 255;
-const int ot = 254;
-const int it = 0;
+const int ot = 250;
+const int it = 200;
 int leftLSReading = 0;
 int rightLSReading = 0;
 int rrrReading = 0;
@@ -28,6 +28,8 @@ int tunnelLeftClearance = 5;
 int mlSpeed = normalSpeed;
 int mrSpeed = normalSpeed;
 
+bool holding = true;
+
 Servo lservo;
 Servo rservo;
 
@@ -42,7 +44,7 @@ void setNormalSpeed() {
   }
 }
 
-void turnLeft() {
+void turnRight() {
   if (mlSpeed != ot || mrSpeed != it) {
     ml->setSpeed(ot);
     mr->setSpeed(it);
@@ -53,7 +55,7 @@ void turnLeft() {
   }
 }
 
-void turnRight() {
+void turnLeft() {
   if (mlSpeed != it || mrSpeed != ot) {
     ml->setSpeed(it);
     mr->setSpeed(ot);
@@ -80,11 +82,11 @@ void followLine() {
   rightLSReading = digitalRead(rightLSPin);
   rrrReading = digitalRead(rrrPin);
   // usReading = digitalRead(usPin);
-  Serial.print(leftLSReading);
-  Serial.print(" <-L  R-> ");
-  Serial.print(rightLSReading);
-  Serial.print("       RM-> ");
-  Serial.println(rrrReading);
+  // Serial.print(leftLSReading);
+  // Serial.print(" <-L  R-> ");
+  // Serial.print(rightLSReading);
+  // Serial.print("       RM-> ");
+  // Serial.println(rrrReading);
   // if (millis() - timeStart > 500) {
   //   timeStart = millis();
   //   Serial.print(mlSpeed);
@@ -113,9 +115,9 @@ void setup() {
   mr->setSpeed(normalSpeed);
   ml->run(FORWARD);
   mr->run(FORWARD);
-  lservo.write(135.0/270*180);
-  rservo.write(15.0/270*180);  
-  delay(500);
+  // lservo.write(135.0/270*180);
+  // rservo.write(15.0/270*180);  
+  // delay(500);
   lservo.write(15.0/270*180);
   rservo.write(135.0/270*180);
 }
@@ -128,36 +130,8 @@ void tunnelDriving() {
 }
 
 void loop() {
-
-  // lservo.write(5.0/270*180);
-  // rservo.write(145.0/270*180);
-  // Serial.println(0);
-  // delay(1000);
-  // if (topIRSensor.getDistance() < ceilingThreshold)
-  //   tunnelDriving();
-  // else
-  followLine();
-  // Serial.println(readUSSensor());
-  // mr->setSpeed(innerTurnSpeed);
-  // mr->run(BACKWARD);
-  // delay(1000);
-  // mr->setSpeed(normalSpeed);
-  // mr->run(FORWARD);
-  // delay(2000);
-  // //dropping sequence
-  // ml->run(BACKWARD);
-  // mr->run(BACKWARD);
-  // delay(2000);
-  // mr->setSpeed(innerTurnSpeed);
-  // mr->run(FORWARD);
-  // delay(1000);
-  // mr->setSpeed(normalSpeed);
-  // ml->run(FORWARD);
-  // mr->run(FORWARD);
-  // put your main code here, to run repeatedly:
-  // if (millis() - timeStart > 1000) {
-  //   m1->setSpeed(100);
-  //   m2->setSpeed(100);
-  // }
-
+  if (holding && leftUS.reading(readUSSensor(true)) < 10)
+    tunnelDriving();
+  else
+    followLine();
 }
