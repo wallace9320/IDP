@@ -52,6 +52,7 @@ void setup()
   pinMode(runningLED, OUTPUT);  
 
   timeButton = millis();
+  timeLED = millis();
 
   delay(1000);
 } 
@@ -59,21 +60,28 @@ void setup()
 void loop()
 {
   
-  // if (digitalRead(buttonPin) == HIGH && millis() - timeButton > 1000)
-  // {
-  //   button = !button;
-  //   timeButton = millis();
-  // }
+  if (digitalRead(buttonPin) == LOW && millis() - timeButton > 1000)
+  {
+    button = !button;
+    timeButton = millis();
+  }
   if (button)
   {
-    digitalWrite(runningLED, HIGH);
+    if (millis() - timeLED > 250) {
+      timeLED = millis();
+      led = !led;
+    }
+    digitalWrite(runningLED, led);
     // if start is true run starting sequence else run main
-    if (start)
+    if (start) {
+      Serial.println("Start");
       initialMovement(); // in initial, everything is hard coded until enter white line loop
+    }
     else
     { 
       frontUS = readUSSensor(true);
-      Serial.print("Hall effect  ");
+      Serial.print(digitalRead(buttonPin));
+      Serial.print("  Hall effect  ");
       Serial.print(analogRead(hallEffectPin));
       Serial.print("  US  ");
       Serial.print(frontUS);
@@ -106,9 +114,7 @@ void loop()
       
       followLine();
 
-      // The first condition is only trigger if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
-      // The second conditionis if is to make sure it has traveled a certain distance, ie must be somewhere far away,
-      // so crossing that white cross won't trigger this
+      // only triggered if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
       if (holding && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
       {
         noOfWhiteLines++;
@@ -119,7 +125,10 @@ void loop()
         droppingMovement();
     }
   }
-  else
+  else {
     digitalWrite(runningLED, LOW);
+    Serial.println("Out");
+  }
+    
 
 }

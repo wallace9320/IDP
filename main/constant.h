@@ -29,16 +29,18 @@ const int runningLED = 13;
 const int hallEffectPin = A0;
 
 // booleans for logic
-bool start = false;
+bool start = true;
 bool turn = false;
 bool holding = false;
 bool magnet = false;
 bool drop = false;
-bool button = true;
+bool button = false;
+bool led = true;
 
 // time
 unsigned long timeStart;
 unsigned long timeButton;
+unsigned long timeLED;
 
 int noOfWhiteLines = 0;
 int mlSpeed = normalSpeed;
