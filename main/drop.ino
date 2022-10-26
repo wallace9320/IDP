@@ -20,7 +20,7 @@ void droppingMovement() {
 
   mr->setSpeed(innerTurnSpeed);
   mr->run(FORWARD);
-  delay(turnTime+100); //300
+  delay(turnTime); //300
 
   mr->setSpeed(normalSpeed);
   ml->run(FORWARD);

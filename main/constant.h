@@ -5,11 +5,11 @@ const int normalSpeed = 255;
 const int ot = 250;
 const int it = 1;
 const int innerTurnSpeed = 120;
-const int turnTime = 2200;
+const int turnTime = 100;
 const int straightTime = 1000;
 const int slowSpeed = 50;       // Speed when very close to block
 const int blockDistance = 5;
-const double tunnelLeftClearance = 5.0;
+const double tunnelLeftClearance = 6.0;
 
 // pins
 const int leftLSPin = 0;
@@ -41,6 +41,7 @@ bool led = true;
 unsigned long timeStart;
 unsigned long timeButton;
 unsigned long timeLED;
+unsigned long timePickUp;
 
 int noOfWhiteLines = 0;
 int mlSpeed = normalSpeed;
@@ -51,3 +52,4 @@ int rightLSReading = 0;
 int farRightLSReading = 0;
 
 double frontUS;
+double leftUS;

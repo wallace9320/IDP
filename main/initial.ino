@@ -6,7 +6,7 @@ void initialMovement()
   mr->setSpeed(normalSpeed);
   ml->run(FORWARD);
   mr->run(FORWARD);
-  delay(2000);
+  delay(4000);
 
   mr->setSpeed(innerTurnSpeed);
   mr->run(BACKWARD);

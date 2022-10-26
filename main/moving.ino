@@ -48,13 +48,13 @@ void followLine() {
   farRightLSReading = digitalRead(farRightLSPin);
   if (leftLSReading == WHITE && rightLSReading == BLACK) turnLeft();
   else if (leftLSReading == BLACK && rightLSReading == WHITE && farRightLSReading == BLACK) turnRight();
+  else if (holding && leftUS < 10) tunnelDriving();
   else setNormalSpeed();
 }
 
 void tunnelDriving() {
-  int leftUSreading = readUSSensor(false);
-  if (leftUSreading < tunnelLeftClearance + 0.5) turnLeft();
-  else if (leftUSreading > tunnelLeftClearance - 0.5) turnRight();
+  if (leftUS > tunnelLeftClearance + 0.5) turnLeft();
+  else if (leftUS < tunnelLeftClearance - 0.5) turnRight();
   else setNormalSpeed();
 }
 

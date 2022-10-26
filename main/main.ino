@@ -67,11 +67,7 @@ void loop()
   }
   if (button)
   {
-    if (millis() - timeLED > 250) {
-      timeLED = millis();
-      led = !led;
-    }
-    digitalWrite(runningLED, led);
+    digitalWrite(runningLED, HIGH);
     // if start is true run starting sequence else run main
     if (start) {
       Serial.println("Start");
@@ -80,20 +76,22 @@ void loop()
     else
     { 
       frontUS = readUSSensor(true);
+      leftUS = readUSSensor(false);
       Serial.print(digitalRead(buttonPin));
       Serial.print("  Hall effect  ");
       Serial.print(analogRead(hallEffectPin));
-      Serial.print("  US  ");
+      Serial.print("  FUS  ");
       Serial.print(frontUS);
-      Serial.print("  start  ");
-      Serial.print(start);
+      Serial.print("  LUS  ");
+      Serial.print(leftUS);
       Serial.print("  holding  ");
       Serial.print(holding);
       Serial.print("  magnet  ");
       Serial.print(magnet);
-      Serial.print("  turn  ");
-      Serial.print(turn);
-      Serial.println("  white line  ");
+      Serial.print("  ls  ");
+      Serial.print(mlSpeed);
+      Serial.print("  rs  ");
+      Serial.println(mrSpeed);
 
 
       // Serial.println();
@@ -109,23 +107,25 @@ void loop()
       if (frontUS < 4 && !holding)
         pickupAll();
 
-      // if (holding && readUSSensor(false) < 10)
-      //   tunnelDriving();
-      
+
       followLine();
 
       // only triggered if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
-      if (holding && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
+      if (holding && millis() - timePickUp > 15000 && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
       {
         noOfWhiteLines++;
         timeStart = millis();
       }
 
-      if (holding && (magnet && noOfWhiteLines >= 4 || !magnet && noOfWhiteLines == 2))
+      if (holding && (magnet && noOfWhiteLines >= 3 || !magnet && noOfWhiteLines == 1))
         droppingMovement();
     }
   }
   else {
+    ml->setSpeed(0);
+    mr->setSpeed(0);
+    mlSpeed = 0;
+    mrSpeed = 0;
     digitalWrite(runningLED, LOW);
     Serial.println("Out");
   }

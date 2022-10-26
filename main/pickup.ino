@@ -5,14 +5,13 @@ void stop()
   mr->setSpeed(0);
   mlSpeed = 0;
   mrSpeed = 0;
-  digitalWrite(runningLED, LOW)
 }
 
 // Set the two booleans
 void pickupSetup()
 {
   holding = true;
-  magnet = (analogRead(hallEffectPin) > 200); // Find better ways to increase reliability, e.g. read 5 values then take average
+  magnet = (analogRead(hallEffectPin) > 300); // Find better ways to increase reliability, e.g. read 5 values then take average
 }
 
 void actualPickup()
@@ -25,7 +24,7 @@ void actualPickup()
 void pickupAll()
 {
   stop();
-
+  digitalWrite(runningLED, LOW);
   delay(200);
   if (readUSSensor(true) < 4 || readUSSensor(true) > 980)
   {
@@ -40,5 +39,7 @@ void pickupAll()
     else
       digitalWrite(greenLED, LOW);
     actualPickup();
+    digitalWrite(runningLED, HIGH);
+    timePickUp = millis();
   }
 }
