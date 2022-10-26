@@ -112,7 +112,6 @@ void loop()
       if (holding && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
       {
         noOfWhiteLines++;
-        // we can add an LED to signal this happened
         timeStart = millis();
       }
 

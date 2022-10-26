@@ -39,7 +39,6 @@ bool button = true;
 // time
 unsigned long timeStart;
 unsigned long timeButton;
-unsigned long pickupTime;
 
 int noOfWhiteLines = 0;
 int mlSpeed = normalSpeed;
