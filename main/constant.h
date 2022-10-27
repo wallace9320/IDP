@@ -5,7 +5,7 @@ const int normalSpeed = 255;
 const int ot = 250;
 const int it = 1;
 const int innerTurnSpeed = 120;
-const int turnTime = 100;
+const int turnTime = 2200;
 const int straightTime = 1000;
 const int slowSpeed = 50;       // Speed when very close to block
 const int blockDistance = 5;
@@ -35,7 +35,7 @@ bool holding = false;
 bool magnet = false;
 bool drop = false;
 bool button = false;
-bool led = true;
+bool delivered = false;
 
 // time
 unsigned long timeStart;

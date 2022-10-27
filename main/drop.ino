@@ -6,7 +6,8 @@ void actualDropping() {
 void droppingMovement() {
   mr->setSpeed(innerTurnSpeed);
   mr->run(BACKWARD);
-  delay(turnTime);
+  if (magnet) delay(turnTime);
+  else delay(turnTime-500);
 
   mr->setSpeed(normalSpeed);
   mr->run(FORWARD);
@@ -16,16 +17,32 @@ void droppingMovement() {
 
   ml->run(BACKWARD);
   mr->run(BACKWARD);
-  delay(straightTime+700); //1000
+  delay(straightTime+300); //1000
 
   mr->setSpeed(innerTurnSpeed);
   mr->run(FORWARD);
-  delay(turnTime); //300
+  if (magnet) delay(turnTime+300); //300
+  else delay(turnTime);
 
   mr->setSpeed(normalSpeed);
   ml->run(FORWARD);
 
   holding = false;
-  noOfWhiteLines = 0;
+  // noOfWhiteLines = 0; home code
   turn = false;
+  timeStart = millis();
+  delivered = true;
+}
+
+void goHome() {
+  delay(1000);
+  mr->setSpeed(innerTurnSpeed);
+  mr->run(BACKWARD);
+  delay(turnTime+250);
+  mr->setSpeed(normalSpeed);
+  mr->run(FORWARD);
+  while (readUSSensor(true) > 4) continue;
+  ml->setSpeed(0);
+  mr->setSpeed(0);
+  button = false;
 }

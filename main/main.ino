@@ -59,7 +59,6 @@ void setup()
 
 void loop()
 {
-  
   if (digitalRead(buttonPin) == LOW && millis() - timeButton > 1000)
   {
     button = !button;
@@ -91,7 +90,9 @@ void loop()
       Serial.print("  ls  ");
       Serial.print(mlSpeed);
       Serial.print("  rs  ");
-      Serial.println(mrSpeed);
+      Serial.print(mrSpeed);
+      Serial.print("  white  ");
+      Serial.println(noOfWhiteLines);
 
 
       // Serial.println();
@@ -111,14 +112,18 @@ void loop()
       followLine();
 
       // only triggered if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
-      if (holding && millis() - timePickUp > 15000 && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
+      if (millis() - timePickUp > 15000 && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
       {
         noOfWhiteLines++;
         timeStart = millis();
       }
 
-      if (holding && (magnet && noOfWhiteLines >= 3 || !magnet && noOfWhiteLines == 1))
+      if (holding && (magnet && noOfWhiteLines == 3 || !magnet && noOfWhiteLines == 1))
         droppingMovement();
+
+      // home code
+      if (delivered && (noOfWhiteLines == 2 || noOfWhiteLines == 6))
+        goHome();
     }
   }
   else {

@@ -48,7 +48,7 @@ void followLine() {
   farRightLSReading = digitalRead(farRightLSPin);
   if (leftLSReading == WHITE && rightLSReading == BLACK) turnLeft();
   else if (leftLSReading == BLACK && rightLSReading == WHITE && farRightLSReading == BLACK) turnRight();
-  else if (holding && leftUS < 10) tunnelDriving();
+  else if (leftUS < 10) tunnelDriving();
   else setNormalSpeed();
 }
 

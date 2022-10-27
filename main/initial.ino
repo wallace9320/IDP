@@ -10,7 +10,7 @@ void initialMovement()
 
   mr->setSpeed(innerTurnSpeed);
   mr->run(BACKWARD);
-  delay(turnTime);
+  delay(turnTime+500);
 
   mr->setSpeed(normalSpeed);
   mr->run(FORWARD);
