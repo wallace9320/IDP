@@ -10,7 +10,7 @@ void initialMovement()
 
   mr->setSpeed(innerTurnSpeed);
   mr->run(BACKWARD);
-  delay(turnTime+500);
+  while (digitalRead(rightLSPin) == BLACK) continue;
 
   mr->setSpeed(normalSpeed);
   mr->run(FORWARD);

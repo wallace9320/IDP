@@ -19,12 +19,14 @@ void droppingMovement() {
   mr->run(BACKWARD);
   delay(straightTime+300); //1000
 
-  mr->setSpeed(innerTurnSpeed);
+  ml->setSpeed(innerTurnSpeed);
   mr->run(FORWARD);
-  if (magnet) delay(turnTime+300); //300
-  else delay(turnTime);
+  delay(2000);
+  while (digitalRead(rightLSPin) == BLACK) continue;
+  // if (magnet) delay(turnTime+300);
+  // else delay(turnTime);
 
-  mr->setSpeed(normalSpeed);
+  ml->setSpeed(normalSpeed);
   ml->run(FORWARD);
 
   holding = false;

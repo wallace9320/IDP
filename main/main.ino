@@ -105,14 +105,23 @@ void loop()
         setNormalSpeed();
 
       // if within 1 cm of block stop, initialize pick up sequence; arrest others; run all in one go
-      if (frontUS < 4 && !holding)
+      if ((frontUS < 4 || frontUS > 2000 && millis() - timeHard > 15000) && !holding)
         pickupAll();
 
 
       followLine();
 
+      if (millis() - timeHard > 15000 && turn && !holding && leftUS < 60) {
+        delay(700);
+        ml->setSpeed(innerTurnSpeed);
+        ml->run(BACKWARD);
+        while (readUSSensor(true) > leftUS) continue;
+        ml->setSpeed(normalSpeed);
+        ml->run(FORWARD);
+      }
+
       // only triggered if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
-      if (millis() - timePickUp > 15000 && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
+      if (millis() - timePickUp > 20000 && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)
       {
         noOfWhiteLines++;
         timeStart = millis();

@@ -25,22 +25,18 @@ void pickupAll()
 {
   stop();
   digitalWrite(runningLED, LOW);
-  delay(200);
-  if (readUSSensor(true) < 4 || readUSSensor(true) > 980)
-  {
-    pickupSetup();
-    if (magnet)
-      digitalWrite(redLED, HIGH);
-    else
-      digitalWrite(greenLED, HIGH);
-    delay(5000);
-    if (magnet)
-      digitalWrite(redLED, LOW);
-    else
-      digitalWrite(greenLED, LOW);
-    actualPickup();
-    digitalWrite(runningLED, HIGH);
-    timePickUp = millis();
-    noOfWhiteLines = 0;
-  }
+  pickupSetup();
+  if (magnet)
+    digitalWrite(redLED, HIGH);
+  else
+    digitalWrite(greenLED, HIGH);
+  delay(5000);
+  if (magnet)
+    digitalWrite(redLED, LOW);
+  else
+    digitalWrite(greenLED, LOW);
+  actualPickup();
+  digitalWrite(runningLED, HIGH);
+  timePickUp = millis();
+  noOfWhiteLines = 0;
 }

@@ -59,17 +59,23 @@ void tunnelDriving() {
 }
 
 void hardLeft() {
-  ml->setSpeed(120);
+  delay(1500);
+  ml->setSpeed(0);
   mr->setSpeed(255);
-  ml->run(FORWARD);
-  mr->run(FORWARD);
-  Serial.println("LMFAO");
-  delay(5300);
-  ml->setSpeed(normalSpeed);
-  mr->setSpeed(normalSpeed);
+  while (digitalRead(rightLSPin) == BLACK) continue;
+  ml->setSpeed(255);
+  // ml->setSpeed(120);
+  // mr->setSpeed(255);
+  // ml->run(FORWARD);
+  // mr->run(FORWARD);
+  // Serial.println("LMFAO");
+  // delay(5300);
+  // ml->setSpeed(normalSpeed);
+  // mr->setSpeed(normalSpeed);
   mlSpeed = normalSpeed;
   mrSpeed = normalSpeed;
   turn = true;
+  timeHard = millis();
 }
 // void bumpWall() {
 //   ml->run(BACKWARD);
