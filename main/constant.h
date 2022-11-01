@@ -35,7 +35,7 @@ bool holding = false;
 bool magnet = false;
 bool drop = false;
 bool button = false;
-bool delivered = false;
+int delivered = 0;
 
 // time
 unsigned long timeStart;

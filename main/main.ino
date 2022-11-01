@@ -111,13 +111,17 @@ void loop()
 
       followLine();
 
-      if (millis() - timeHard > 15000 && turn && !holding && leftUS < 60) {
+      // SEARCH ALGORITHM
+      if (millis() - timeHard > 20000 && turn && delivered == 1 && 20 < leftUS < 50) {
         delay(700);
         ml->setSpeed(innerTurnSpeed);
         ml->run(BACKWARD);
-        while (readUSSensor(true) > leftUS) continue;
+        while (readUSSensor(true) + 5 > leftUS) continue;
+        delay(100);
         ml->setSpeed(normalSpeed);
         ml->run(FORWARD);
+        while (4 < frontUS < 2000) continue;
+        pickupAll();
       }
 
       // only triggered if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
@@ -131,7 +135,8 @@ void loop()
         droppingMovement();
 
       // home code
-      if (delivered && (noOfWhiteLines == 2 || noOfWhiteLines == 6))
+      if (delivered == 1 && (!magnet && noOfWhiteLines == 5 || magnet && noOfWhiteLines == 3)\
+       || delivered == 2 && (!magnet && noOfWhiteLines == 1 || magnet && noOfWhiteLines == 3))
         goHome();
     }
   }

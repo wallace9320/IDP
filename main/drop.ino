@@ -33,7 +33,8 @@ void droppingMovement() {
   // noOfWhiteLines = 0; home code
   turn = false;
   timeStart = millis();
-  delivered = true;
+  delivered++;
+  noOfWhiteLines = 0;
 }
 
 void goHome() {
