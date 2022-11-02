@@ -25,7 +25,6 @@ const int greenLED = 11;
 const int lservoPin = 10;
 const int rservoPin = 9;
 const int runningLED = 13;
-
 const int hallEffectPin = A0;
 
 // booleans for logic
@@ -35,6 +34,7 @@ bool holding = false;
 bool magnet = false;
 bool drop = false;
 bool button = false;
+
 int delivered = 0;
 
 // time
@@ -44,14 +44,15 @@ unsigned long timeLED;
 unsigned long timePickUp;
 unsigned long timeHard;
 
+// variables for driving
 int noOfWhiteLines = 0;
 int mlSpeed = normalSpeed;
 int mrSpeed = normalSpeed;
 
+// readings initialisation
 int leftLSReading = 0;
 int rightLSReading = 0;
 int farRightLSReading = 0;
-
 double frontUS;
 double leftUS;
 double leftIR;

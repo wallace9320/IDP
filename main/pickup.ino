@@ -11,7 +11,7 @@ void stop()
 void pickupSetup()
 {
   holding = true;
-  magnet = (analogRead(hallEffectPin) > 200); // Find better ways to increase reliability, e.g. read 5 values then take average
+  magnet = analogRead(hallEffectPin) > 200;
 }
 
 void actualPickup()
