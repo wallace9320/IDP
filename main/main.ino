@@ -35,8 +35,8 @@ void setup()
 
   lservo.attach(lservoPin);
   rservo.attach(rservoPin);
-  lservo.write(135.0/270*180);
-  rservo.write(15.0/270*180);
+  lservo.write(150.0/270*180);
+  rservo.write(0.0/270*180);
 
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(leftLSPin, INPUT);
@@ -87,42 +87,43 @@ void loop()
       Serial.print(holding);
       Serial.print("  magnet  ");
       Serial.print(magnet);
-      Serial.print("  ls  ");
-      Serial.print(mlSpeed);
-      Serial.print("  rs  ");
-      Serial.print(mrSpeed);
+      Serial.print("  delivered  ");
+      Serial.print(delivered);
       Serial.print("  white  ");
       Serial.println(noOfWhiteLines);
 
 
       // Serial.println();
       // if within 5 cm of block lower speed of motor
-      if (!turn && frontUS < 30)
+      if (!turn && frontUS < 30) {
         hardLeft();
+      }
+        
+        // hardLeft();
       if (frontUS < 10)
         setLowerSpeed();
       else
         setNormalSpeed();
 
       // if within 1 cm of block stop, initialize pick up sequence; arrest others; run all in one go
-      if ((frontUS < 4 || frontUS > 2000 && millis() - timeHard > 15000) && !holding)
+      if ((frontUS < 4 && millis() - timeHard > 15000) && turn && !holding)
         pickupAll();
 
 
       followLine();
 
       // SEARCH ALGORITHM
-      if (millis() - timeHard > 20000 && turn && delivered == 1 && 20 < leftUS < 50) {
-        delay(700);
-        ml->setSpeed(innerTurnSpeed);
-        ml->run(BACKWARD);
-        while (readUSSensor(true) + 5 > leftUS) continue;
-        delay(100);
-        ml->setSpeed(normalSpeed);
-        ml->run(FORWARD);
-        while (4 < frontUS < 2000) continue;
-        pickupAll();
-      }
+      // if (millis() - timeHard > 20000 && turn && delivered == 1 && 20 < leftUS < 50) {
+      //   delay(700);
+      //   ml->setSpeed(innerTurnSpeed);
+      //   ml->run(BACKWARD);
+      //   while (readUSSensor(true) + 5 > leftUS) continue;
+      //   delay(100);
+      //   ml->setSpeed(normalSpeed);
+      //   ml->run(FORWARD);
+      //   while (4 < frontUS < 2000) continue;
+      //   pickupAll();
+      // }
 
       // only triggered if 3 seconds elapsed since last addition of white line, so same line won't be calculated twice
       if (millis() - timePickUp > 20000 && millis() - timeStart > 3000 && digitalRead(farRightLSPin) == WHITE)

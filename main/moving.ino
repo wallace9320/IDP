@@ -59,6 +59,8 @@ void tunnelDriving() {
 }
 
 void hardLeft() {
+  ml->setSpeed(255);
+  mr->setSpeed(255);
   delay(1500);
   ml->setSpeed(10);
   mr->setSpeed(255);
@@ -66,7 +68,17 @@ void hardLeft() {
   delay(250);
   if (magnet) delay(500);
   ml->setSpeed(255);
-  delay(1000);
+  ml->run(BACKWARD);
+  mr->run(BACKWARD);
+  mr->setSpeed(0);
+  delay(700);
+  mr->setSpeed(255);
+  delay(500);
+  ml->setSpeed(0);
+  while (digitalRead(leftLSPin) == BLACK) continue;
+  ml->setSpeed(255);
+  ml->run(FORWARD);
+  mr->run(FORWARD);
   // ml->setSpeed(120);
   // mr->setSpeed(255);
   // ml->run(FORWARD);
