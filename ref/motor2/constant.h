@@ -27,6 +27,9 @@ const int rservoPin = 9;
 const int runningLED = 13;
 
 const int hallEffectPin = A0;
+const int leftIRPin = A1;
+const int frontIRPin = A2;
+
 
 // booleans for logic
 bool start = true;
@@ -35,7 +38,7 @@ bool holding = false;
 bool magnet = false;
 bool drop = false;
 bool button = false;
-bool delivered = false;
+int delivered = 0;
 
 // time
 unsigned long timeStart;
@@ -54,3 +57,4 @@ int farRightLSReading = 0;
 
 double frontUS;
 double leftUS;
+double leftIR;

@@ -17,9 +17,7 @@ int readUSSensor(bool front = true)
   int trigPin = front ? frontUStrigPin : leftUStrigPin;
   int echoPin = front ? frontUSechoPin : leftUSechoPin;
   digitalWrite(trigPin, LOW);
-  // delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
-  // delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   return pulseIn(echoPin, HIGH) * 0.034 / 2;
 }
@@ -113,7 +111,7 @@ void loop()
       followLine();
 
       // SEARCH ALGORITHM
-      // if (millis() - timeHard > 20000 && turn && delivered == 1 && 20 < leftUS < 50) {
+      // if (millis() - timeHard > 20000 && turn && delivered >= 1 && 20 < leftUS < 50) {
       //   delay(700);
       //   ml->setSpeed(innerTurnSpeed);
       //   ml->run(BACKWARD);

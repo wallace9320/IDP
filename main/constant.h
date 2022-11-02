@@ -54,3 +54,4 @@ int farRightLSReading = 0;
 
 double frontUS;
 double leftUS;
+double leftIR;

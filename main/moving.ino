@@ -78,15 +78,7 @@ void hardLeft() {
   while (digitalRead(leftLSPin) == BLACK) continue;
   ml->setSpeed(255);
   ml->run(FORWARD);
-  mr->run(FORWARD);
-  // ml->setSpeed(120);
-  // mr->setSpeed(255);
-  // ml->run(FORWARD);
-  // mr->run(FORWARD);
-  // Serial.println("LMFAO");
-  // delay(5300);
-  // ml->setSpeed(normalSpeed);
-  // mr->setSpeed(normalSpeed);
+  mr->run(FORWARD); 
   mlSpeed = normalSpeed;
   mrSpeed = normalSpeed;
   turn = true;

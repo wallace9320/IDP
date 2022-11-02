@@ -21,7 +21,8 @@ void droppingMovement() {
 
   ml->setSpeed(innerTurnSpeed);
   mr->run(FORWARD);
-  delay(3000);
+  if (magnet) delay(3000);
+  else delay(2100);
   while (digitalRead(rightLSPin) == BLACK) continue;
   // if (magnet) delay(turnTime+300);
   // else delay(turnTime);
@@ -41,11 +42,12 @@ void goHome() {
   delay(1000);
   mr->setSpeed(innerTurnSpeed);
   mr->run(BACKWARD);
-  delay(turnTime);
+  delay(500);
   while (digitalRead(leftLSPin) == BLACK) continue;
-  delay(250);
+  delay(300);
   mr->setSpeed(normalSpeed);
   mr->run(FORWARD);
+  delay(1500);
   while (readUSSensor(true) > 4) continue;
   ml->setSpeed(0);
   mr->setSpeed(0);
