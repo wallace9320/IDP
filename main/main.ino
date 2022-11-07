@@ -57,6 +57,7 @@ void setup()
 
 void loop()
 {
+  // button debouncing
   if (digitalRead(buttonPin) == LOW && millis() - timeButton > 1000)
   {
     button = !button;
@@ -65,9 +66,8 @@ void loop()
   if (button)
   {
     digitalWrite(runningLED, HIGH);
-    // if start is true run starting sequence else run main
+    // if start is true (at the beginningrun starting sequence else run main
     if (start) {
-      Serial.println("Start");
       initialMovement(); // in initial, everything is hard coded until enter white line loop
     }
     else
@@ -112,6 +112,5 @@ void loop()
     mlSpeed = 0;
     mrSpeed = 0;
     digitalWrite(runningLED, LOW);
-    Serial.println("Out");
   }
 }

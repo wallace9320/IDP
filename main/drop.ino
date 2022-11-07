@@ -17,21 +17,18 @@ void droppingMovement() {
 
   ml->run(BACKWARD);
   mr->run(BACKWARD);
-  delay(straightTime+300); //1000
+  delay(straightTime+300);
 
   ml->setSpeed(innerTurnSpeed);
   mr->run(FORWARD);
   if (magnet) delay(3000);
   else delay(2100);
   while (digitalRead(rightLSPin) == BLACK) continue;
-  // if (magnet) delay(turnTime+300);
-  // else delay(turnTime);
 
   ml->setSpeed(normalSpeed);
   ml->run(FORWARD);
 
   holding = false;
-  // noOfWhiteLines = 0; home code
   turn = false;
   timeStart = millis();
   delivered++;
